@@ -1,12 +1,12 @@
-const express = require('express');
-const app = express();
-const users = require('./routes/users');
+var express = require("express");
+var app = express();
 
-app.use('/api/users',users);
+var insertupdate = require('./routes/insertupdate');
 
-app.get('/api',(req, res)=>{
-res.send('Hello word from express!');
+app.use(insertupdate);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, process.env.IP, function(){
+    console.log("Running on PORT: ", PORT);
 });
-
-app.listen(1234);
 
