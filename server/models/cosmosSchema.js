@@ -1,19 +1,19 @@
 //schema
-const validator = require('validator');
+const validator = require("validator");
 const { v4: uuidv4 } = require('uuid');
 const newId = uuidv4();
 
 var config ={
     databaseId: 'test',
     containerId: 'Items',
-    partitionKey: { kind: 'Hash',paths:['/id']},
+    partitionKey: { kind: "Hash",paths:["/id"]},
     email:{
         type:String,
         required:true,
-        unique:[true,'El correo ya existe'],
+        unique:[true,"El correo ya existe"],
         validate(value){
             if(!validator.isEmail(value)){
-                throw new Error('Correo invalido!!!');
+                throw new Error("Correo invalido!!!");
             }
         }
     },
@@ -25,4 +25,4 @@ var config ={
 
 };
 
-module.exports = {config}
+module.exports = {config};

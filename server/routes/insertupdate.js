@@ -12,8 +12,6 @@ const dbconn = require("../models/cosmos_connection");
 const databaseId = configData.config.databaseId;
 const containerId = configData.config.containerId;
 
-const app = express();
-
 const endpoint = config.host;
 const key = config.authKey;
 const options = {
@@ -32,8 +30,8 @@ const upsertDocumentAsync = async (doc) => {
     return result;
 };
 //delete record
-const deleteDocumentAsync = async (id, partitionKey) => {
-    const result = container.item(id, partitionKey).delete();
+const deleteDocumentAsync = async (id) => {
+    const result = container.item(id).delete();
     return result;
 };
 router.post("/insertupdate",async(req,res)=>{
@@ -74,10 +72,10 @@ router.post("/insertupdate",async(req,res)=>{
     }
 });
 
-router.delete("/remove/:userid",async(req,res)=>{
+router.delete("/remove/:userid/",async(req,res)=>{
     try{
         const id = req.params.userid;
-        console.log(id);
+        console.log('userid',id);
         //Chequear nulo
         if(!id){
             res.status(404).send({message:"Ingrese un correo o id de usuario!!!"});            
@@ -87,18 +85,18 @@ router.delete("/remove/:userid",async(req,res)=>{
         };
         //Leer registros del contenedor
         let {resources:userDataById} = await container.items.query(querySpec).fetchAll();
-        console.debug('userDataById',userDataById.length);
+        console.log("userDataById",userDataById.length);
 
         if (userDataById.length === 0 ){
-            return res.status(400).send({message:'Id usuario no existe en UserPreferences'});
+            return res.status(400).send({message:"Id usuario no existe en UserPreferences"});
         } else {
-            let { resource: deleteUserDataById} = await deleteDocumentAsync (id, id);
-            console.debug({message:"Registro eliminado de UserPreferences: ", userDataById});
-            return res.status(200).send({message:"Registro eliminado de UserPreferences",userDataById});
+            const { resource: deleteUserDataById} = await deleteDocumentAsync (id, id);
+            console.log({message:"Registro eliminado de UserPreferences: ", userDataById});
+            return res.status(200).send({message:"Registro eliminado de UserPreferences", userDataById});
         }
     } catch(error){
         return res.status(404).send(error);
     }
 });
 
-module.exports = router
+module.exports = router;
