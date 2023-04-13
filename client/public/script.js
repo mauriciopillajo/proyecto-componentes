@@ -8,7 +8,7 @@ let username = document.getElementById("username").value;
 let usuario = {email: email, username : username};
 let usuarioJson = JSON.stringify(usuario);
 
-fetch('http://localhost:5000/insertupdate', {
+fetch('http://localhost:3001/insertupdate', {
     method: 'POST',
     body : usuarioJson,
     headers:{

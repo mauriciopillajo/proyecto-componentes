@@ -35,15 +35,15 @@ const deleteDocumentAsync = async (id) => {
     return result;
 };
 
-router.get("/listar",async(req,res)=>{
+router.get("/insertupdate",async(req,res)=>{
     const querySpec = {
         query: `SELECT * FROM c`
     };
-    let {resources} = await container.items.query(querySpec).fetchAll();
-    //userData.forEach(item =>{
-      //  console.log("username", item.username);
-    //});
-    return resources;
+    let {"resources":userData} = await container.items.query(querySpec).fetchAll();
+    userData.forEach(item =>{
+        console.log("username", item.username);
+    });
+    return res.json({userData});
 });
 
 router.post("/insertupdate",async(req,res)=>{
